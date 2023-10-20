@@ -1,4 +1,4 @@
-#include "simpleshell.h"
+#include "SimpleShell.h"
 
 /**
  * display_string - Prints a string to the standard output
