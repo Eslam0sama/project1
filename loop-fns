@@ -1,0 +1,114 @@
+#include "Simple_Shell.h"
+
+/**
+ * read_line_trim - Read a line of input from stdin and return it as a string
+ * after trimming leading whitespace.
+ * Return: A string containing the input, or NULL on error or empty input.
+ */
+char *read_line_trim(void)
+{
+	char *input_line = NULL;
+	size_t buffer_size = 0;
+	ssize_t read_status;
+
+	read_status = getline(&input_line, &buffer_size, stdin);
+
+	if (read_status == -1)
+	{
+		perror("Error reading input");
+		free(input_line);
+		return NULL;
+	}
+	else if (read_status == 1)
+	{
+		free(input_line);
+		return NULL;
+	}
+	else
+	{
+		// Remove leading whitespace
+		char *trimmed_line = input_line;
+		while (*trimmed_line == ' ' || *trimmed_line == '\t')
+		{
+			trimmed_line++;
+		}
+
+		if (*trimmed_line == '\n')
+		{
+			free(input_line);
+			return NULL;
+		}
+
+		return trimmed_line;
+	}
+}
+
+/**
+ * split_str - Divide a string into an array of strings
+ * @line: The string to be separated
+ * @env: Environment variable
+ * Return: Tokens (array of strings) on success or EXIT_FAILURE if it fails
+ */
+char **split_str(char *line, char **env)
+{
+	int bufsize = TOK_BUFSIZE;
+	int position = 0;
+	char **tokens;
+	char *token;
+
+	if (line == NULL)
+	{
+		return NULL;
+	}
+
+	tokens = _calloc(sizeof(char *), bufsize);
+	if (!tokens)
+	{
+		perror("Error");
+		exit(EXIT_FAILURE);
+	}
+
+	token = strtok(line, TOK_DELIM);
+	while (token != NULL)
+	{
+		tokens[position] = token;
+		position++;
+		token = strtok(NULL, TOK_DELIM);
+	}
+
+	if (tokens[0] == NULL)
+	{
+		tokens[position] = "\n"; /* If it's null, that position is a new line */
+	}
+
+	/* Compare tokens[0] */
+	if ((_strcmp(tokens[0], "exit") == 0) && tokens[1] == NULL)
+	{
+		free(line); /* Free memory and exit the program */
+		free(tokens);
+		exit(0);
+	}
+	if ((_strcmp(tokens[0], "env") == 0) && tokens[1] == NULL)
+	{
+		func_printenv(env); /* Find the environment */
+	}
+
+	return tokens;
+}
+
+/**
+ * print_prompt - Print '>' and wait for a user's input
+ */
+void print_prompt(void)
+{
+	char *prompt = "> ";
+	char *cwd = getcwd(NULL, 0);
+
+	if (isatty(STDIN_FILENO))
+	{
+		write(STDOUT_FILENO, prompt, _strlen(prompt));
+	}
+
+	free(cwd);
+}
+
