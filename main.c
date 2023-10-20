@@ -1,4 +1,4 @@
-#include "simpleshell.h"
+#include "SimpleShell.h"
 
 /**
  * main - Creates a prompt that reads input, parses it, executes, and waits
