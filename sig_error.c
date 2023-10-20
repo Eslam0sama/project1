@@ -1,4 +1,4 @@
-#include "simpleshell.h"
+#include "SimpleShell.h"
 
 /**
  * display_interrupt_message - Displays a new line and prompt when CTRL + C is pressed
