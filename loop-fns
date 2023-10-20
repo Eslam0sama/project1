@@ -1,4 +1,4 @@
-#include "Simple_Shell.h"
+#include "SimpleShell.h"
 
 /**
  * read_line_trim - Read a line of input from stdin and return it as a string
