@@ -1,4 +1,4 @@
-#include "simpleshell.h"
+#include "SimpleShell.h"
 
 /**
  * parse_path - Identifies the path of the command (*args) being passed
