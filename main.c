@@ -1,13 +1,5 @@
 #include "SimpleShell.h"
 
-/**
- * main - Creates a prompt that reads input, parses it, executes, and waits
- * for another command unless told to exit.
- * @ac: Number of arguments
- * @av: Array of arguments
- * @env: Environment variable
- * Return: EXIT_SUCCESS
- */
 int main(int ac __attribute__((unused)), char **av, char **env)
 {
 	char *input_line;
@@ -26,12 +18,12 @@ int main(int ac __attribute__((unused)), char **av, char **env)
 		/* Separate the string to get the command and arguments */
 		arguments = tokenize_input(input_line, env);
 
-		if (compare_strings(arguments[0], "\n") != 0 && compare_strings(arguments[0], "env") != 0)
+		if (arguments[0] != NULL && compare_strings(arguments[0], "\n") != 0 && compare_strings(arguments[0], "env") != 0)
 		{
 			prompt_count += 1;
 			directories = get_path_directories(env); /* Find PATH in the environment variable */
 			status = check_file_status(arguments, directories);
-			execute_child_process(av, arguments, env, status, prompt_count);
+			execute_child_process(arguments[0], arguments, env, status, prompt_count);
 		}
 		else
 		{
