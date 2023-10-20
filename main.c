@@ -1,4 +1,4 @@
-#include "SimpleShell.h"
+#include "simpleshell.h"
 
 int main(int ac __attribute__((unused)), char **av, char **env)
 {
